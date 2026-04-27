@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy Frontend') {
             steps {
                 sh '''
-                npx serve -s frontend/dist -l 3000
+                nohup npx serve -s frontend/dist -l 3000 > frontend.log 2>&1 &
                 '''
             }
         }
