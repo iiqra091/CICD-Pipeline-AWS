@@ -47,8 +47,7 @@ pipeline {
         stage('Deploy Frontend') {
             steps {
                 sh '''
-                npm install -g serve
-                serve -s frontend/dist -l 3000
+                npx serve -s frontend/dist -l 3000
                 '''
             }
         }
