@@ -19,9 +19,12 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh '''
+                    rm -rf node_modules package-lock.json
+                    npm install
                     chmod +x node_modules/.bin/vite
                     npm run build
                     '''
+}
                 }
             }
         }
