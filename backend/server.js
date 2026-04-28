@@ -8,7 +8,13 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+// ✅ Proper CORS config (added)
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
