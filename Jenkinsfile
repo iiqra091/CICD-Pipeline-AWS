@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        PROJECT_DIR = "Attendance Management System"
-    }
-
     stages {
 
         stage('Install Backend Dependencies') {
@@ -19,8 +15,8 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh '''
-                    chmod +x node_modules/.bin/vite
-                    npm run build
+                    rm -rf node_modules package-lock.json
+                    npm install --legacy-peer-deps
                     '''
                 }
             }
@@ -29,7 +25,10 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
-                    sh 'npm run build'
+                    sh '''
+                    chmod +x node_modules/.bin/vite
+                    npm run build
+                    '''
                 }
             }
         }
@@ -47,7 +46,7 @@ pipeline {
         stage('Deploy Frontend') {
             steps {
                 sh '''
-                npx serve -s frontend/dist -l 3000
+                nohup npx serve -s frontend/dist -l 3000 > frontend.log 2>&1 &
                 '''
             }
         }
