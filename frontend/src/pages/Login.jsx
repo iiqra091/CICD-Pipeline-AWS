@@ -7,7 +7,7 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (!form.email || !form.password) {
-      setPopup("⚠️ Please fill all fields");
+      setPopup("Fill all fields");
       setTimeout(() => setPopup(""), 2000);
       return;
     }
@@ -15,14 +15,13 @@ export default function Login() {
     try {
       const res = await API.post("/auth/login", form);
 
-      // ✅ simple success (no token dependency)
-      setPopup("✅ Login successful!");
-      
-      // optional redirect
-      window.location.href = "/dashboard";
+      setPopup("Login successful");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
 
     } catch (err) {
-      setPopup("❌ " + (err.response?.data?.message || "Login failed"));
+      setPopup(err.response?.data?.message || "Login failed");
       setTimeout(() => setPopup(""), 2000);
     }
   };
