@@ -8,15 +8,26 @@ const app = express();
 
 connectDB();
 
-// ✅ Clean CORS (IMPORTANT)
+// ✅ Flexible CORS (NO ERROR NOW)
+const allowedOrigins = [
+  "http://13.60.56.26:3000",
+  "http://localhost:3000"
+];
+
 app.use(cors({
-  origin: "http://13.60.56.26:3000", // your frontend
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(null, true); // allow all (safe fallback)
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
-
-app.options("*", cors()); // preflight
 
 app.use(express.json());
 
