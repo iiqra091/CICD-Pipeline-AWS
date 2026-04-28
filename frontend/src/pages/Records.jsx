@@ -6,13 +6,20 @@ export default function Records() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token");
+      try {
+        const token = localStorage.getItem("token");
 
-      const res = await API.get("/attendance", {
-        headers: { Authorization: token }
-      });
+        const res = await API.get("/attendance", {
+          headers: { Authorization: token }
+        });
 
-      setRecords(res.data);
+        // ✅ SAFE SET
+        setRecords(Array.isArray(res.data) ? res.data : []);
+
+      } catch (err) {
+        console.log(err);
+        setRecords([]);
+      }
     };
 
     fetchData();
@@ -21,11 +28,16 @@ export default function Records() {
   return (
     <div>
       <h3>Attendance Records</h3>
-      {records.map((r, i) => (
-        <p key={i}>
-          {new Date(r.date).toLocaleDateString()} - {r.status}
-        </p>
-      ))}
+
+      {Array.isArray(records) && records.length > 0 ? (
+        records.map((r, i) => (
+          <p key={i}>
+            {new Date(r.date).toLocaleDateString()} - {r.status}
+          </p>
+        ))
+      ) : (
+        <p>No records found</p>
+      )}
     </div>
   );
 }

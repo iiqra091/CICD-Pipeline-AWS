@@ -15,15 +15,11 @@ export default function Login() {
     try {
       const res = await API.post("/auth/login", form);
 
-      // ✅ SAVE TOKEN (MOST IMPORTANT)
+      // ✅ SAVE TOKEN (ONLY ONCE)
       localStorage.setItem("token", res.data.token);
 
-      setPopup("Login successful");
-
-      setTimeout(() => {
-        // ✅ PROPER REDIRECT
-        window.location.href = "/";
-      }, 1000);
+      // ✅ INSTANT REDIRECT (NO DELAY)
+      window.location.href = "/dashboard";
 
     } catch (err) {
       setPopup(err.response?.data?.message || "Login failed");
