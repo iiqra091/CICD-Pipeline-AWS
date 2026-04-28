@@ -1,8 +1,22 @@
-import Login from "./pages/Login.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
+import { useEffect, useState } from "react";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
-export default function App() {
-  const token = localStorage.getItem("token");
+function App() {
+  const [token, setToken] = useState(null);
 
-  return token ? <Dashboard /> : <Login />;
+  useEffect(() => {
+    const stored = localStorage.getItem("token");
+    if (stored) {
+      setToken(stored);
+    }
+  }, []);
+
+  return (
+    <>
+      {token ? <Dashboard /> : <Login />}
+    </>
+  );
 }
+
+export default App;
