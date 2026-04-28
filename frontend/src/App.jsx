@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("token");
-    if (stored) {
-      setToken(stored);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
     }
   }, []);
 
   return (
     <>
-      {token ? <Dashboard /> : <Login />}
+      {isLoggedIn ? <Dashboard /> : <Login />}
     </>
   );
 }
